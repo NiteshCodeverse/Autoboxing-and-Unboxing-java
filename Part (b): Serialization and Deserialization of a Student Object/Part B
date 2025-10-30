@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.Scanner;
+
+class Student implements Serializable {
+    private int id;
+    private String name;
+    private double marks;
+
+    public Student(int id, String name, double marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Marks: " + marks;
+    }
+}
+
+public class PartB_StudentSerialization {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            // Taking student input
+            System.out.print("Enter Student ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+            System.out.print("Enter Student Name: ");
+            String name = sc.nextLine();
+            System.out.print("Enter Student Marks: ");
+            double marks = sc.nextDouble();
+
+            Student s1 = new Student(id, name, marks);
+
+            // Serialization
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("student.ser"));
+            out.writeObject(s1);
+            out.close();
+            System.out.println("Student object serialized successfully!");
+
+            // Deserialization
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("student.ser"));
+            Student s2 = (Student) in.readObject();
+            in.close();
+
+            System.out.println("Deserialized Student: " + s2);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sc.close();
+        }
+    }
+}
